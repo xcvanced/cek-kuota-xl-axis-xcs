@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cek Kuota XL & AXIS</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #050816 0%, #0b1020 100%);
+      color: #fff;
+      padding: 24px 14px;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 430px;
+      background: #131827;
+      border: 1px solid rgba(255,255,255,.06);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.25);
+    }
+
+    h2 {
+      margin: 0 0 8px;
+      font-size: 24px;
+      line-height: 1.3;
+    }
+
+    .sub {
+      margin: 0 0 18px;
+      color: #b8bcc8;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    input {
+      width: 100%;
+      padding: 16px 18px;
+      border: none;
+      border-radius: 18px;
+      outline: none;
+      margin-bottom: 12px;
+      font-size: 16px;
+      background: #fff;
+      color: #111;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px 18px;
+      border: none;
+      border-radius: 18px;
+      background: #facc15;
+      color: #111;
+      font-weight: 800;
+      font-size: 16px;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    button:disabled {
+      opacity: .7;
+      cursor: not-allowed;
+    }
+
+    .result {
+      margin-top: 16px;
+    }
+
+    .box {
+      background: #fff;
+      color: #111;
+      border-radius: 18px;
+      padding: 14px;
+      margin-top: 12px;
+    }
+
+    .title {
+      font-weight: 800;
+      margin-bottom: 10px;
+      font-size: 15px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .item {
+      background: #f4f4f5;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .item small {
+      display: block;
+      color: #666;
+      margin-bottom: 4px;
+      font-size: 12px;
+    }
+
+    .item strong {
+      display: block;
+      font-size: 14px;
+      line-height: 1.45;
+      word-break: break-word;
+    }
+
+    .progress-wrap {
+      margin-top: 12px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .progress {
+      width: 100%;
+      height: 12px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar {
+      height: 100%;
+      width: 0%;
+      background: #111;
+      border-radius: 999px;
+      transition: width .35s ease;
+    }
+
+    .bar.red { background: #dc2626; }
+    .bar.orange { background: #ea580c; }
+
+    .status {
+      margin-top: 12px;
+      padding: 12px 14px;
+      border-radius: 14px;
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .ok {
+      background: #ecfdf5;
+      color: #065f46;
+    }
+
+    .err {
+      background: #2b1212;
+      color: #ffb4b4;
+      border: 1px solid #5a2222;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+
+    .muted {
+      color: #667085;
+      font-size: 12px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    .footer-note {
+      margin-top: 14px;
+      color: #98a2b3;
+      font-size: 12px;
+      text-align: center;
+      line-height: 1.5;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Cek Kuota XL & AXIS</h2>
+    <p class="sub">Masukkan nomor XL atau AXIS untuk melihat info kartu, paket, dan sisa kuota.</p>
+
+    <input id="nomor" type="tel" placeholder="Contoh: 0817xxxx atau 62817xxxx" />
+    <button id="btnCek" onclick="cek()">Cek Kuota</button>
+
+    <div class="result" id="result"></div>
+    <div class="footer-note">Powered by XC-Store</div>
+  </div>
+
+  <script>
+    function normalizeNumber(input) {
+      let n = String(input || '').trim().replace(/\D/g, '');
+      if (!n) return '';
+      if (n.startsWith('0')) n = '62' + n.slice(1);
+      return n;
+    }
+
+    function parseGB(value) {
+      if (!value) return 0;
+      const clean = String(value).trim().toUpperCase().replace(',', '.');
+      const num = parseFloat(clean.replace(/[^\d.]/g, ''));
+      if (isNaN(num)) return 0;
+      if (clean.includes('MB')) return num / 1024;
+      if (clean.includes('KB')) return num / (1024 * 1024);
+      return num;
+    }
+
+    function formatGB(n) {
+      if (!isFinite(n)) return '-';
+      if (n >= 1) return n.toFixed(n % 1 === 0 ? 0 : 2).replace(/\.00$/, '') + ' GB';
+      return (n * 1024).toFixed(0) + ' MB';
+    }
+
+    function parseDDMMYYYY(str) {
+      if (!str) return null;
+      const p = str.split('-');
+      if (p.length !== 3) return null;
+      return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`);
+    }
+
+    function escapeHtml(text) {
+      return String(text ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    async function cek() {
+      const input = document.getElementById('nomor');
+      const btn = document.getElementById('btnCek');
+      const resBox = document.getElementById('result');
+
+      const nomor = normalizeNumber(input.value);
+
+      if (!nomor) {
+        resBox.innerHTML = `<div class="status err">Nomor belum diisi.</div>`;
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Loading...';
+      resBox.innerHTML = `<div class="box">Sedang mengambil data...</div>`;
+
+      try {
+        const url = `/api/cek?number=${encodeURIComponent(nomor)}`;
+        const res = await fetch(url);
+        const raw = await res.text();
+
+        let data;
+        try {
+          data = JSON.parse(raw);
+        } catch {
+          resBox.innerHTML = `<div class="status err">Response bukan JSON valid.\n\n${escapeHtml(raw)}</div>`;
+          return;
+        }
+
+        if (!data.success) {
+          resBox.innerHTML = `<div class="status err">${escapeHtml(data.message || 'Gagal mengambil data.')}</div>`;
+          return;
+        }
+
+        const root = data.data || {};
+        const subs = root.subs_info || {};
+        const packageInfo = root.package_info || {};
+        const packages = Array.isArray(packageInfo.packages) ? packageInfo.packages : [];
+
+        if (!packages.length) {
+          resBox.innerHTML = `
+            <div class="box">
+              <div class="title">Informasi Nomor</div>
+              <div class="grid">
+                <div class="item"><small>Nomor</small><strong>${escapeHtml(subs.msisdn || nomor)}</strong></div>
+                <div class="item"><small>Operator</small><strong>${escapeHtml(subs.operator || '-')}</strong></div>
+                <div class="item"><small>Jaringan</small><strong>${escapeHtml(subs.net_type || '-')}</strong></div>
+                <div class="item"><small>Masa Aktif</small><strong>${escapeHtml(subs.exp_date || '-')}</strong></div>
+              </div>
+            </div>
+            <div class="status err">${escapeHtml(packageInfo.error_message || 'Paket tidak ditemukan pada nomor ini.')}</div>
+          `;
+          return;
+        }
+
+        const pkg = packages[0];
+        const quota = Array.isArray(pkg.quotas) && pkg.quotas.length ? pkg.quotas[0] : {};
+
+        const totalGB = parseGB(quota.total);
+        const remainingGB = parseGB(quota.remaining);
+        const usedGB = Math.max(0, totalGB - remainingGB);
+
+        let remainingPercent = Number(quota.percent);
+        if (!isFinite(remainingPercent)) {
+          remainingPercent = totalGB > 0 ? (remainingGB / totalGB) * 100 : 0;
+        }
+
+        const usedPercent = totalGB > 0 ? (usedGB / totalGB) * 100 : 0;
+        const expDate = parseDDMMYYYY(pkg.expiry);
+        const expired = expDate ? (new Date() > expDate) : false;
+
+        let barClass = '';
+        if (expired) barClass = 'red';
+        else if (remainingPercent <= 20) barClass = 'orange';
+
+        const volteText = subs.volte
+          ? [
+              subs.volte.device ? 'Device' : null,
+              subs.volte.area ? 'Area' : null,
+              subs.volte.simcard ? 'SIM' : null
+            ].filter(Boolean).join(', ') || '-'
+          : '-';
+
+        resBox.innerHTML = `
+          <div class="box">
+            <div class="title">Informasi Nomor</div>
+            <div class="grid">
+              <div class="item"><small>Nomor</small><strong>${escapeHtml(subs.msisdn || nomor)}</strong></div>
+              <div class="item"><small>Operator</small><strong>${escapeHtml(subs.operator || '-')}</strong></div>
+              <div class="item"><small>Jaringan</small><strong>${escapeHtml(subs.net_type || '-')}</strong></div>
+              <div class="item"><small>Verifikasi ID</small><strong>${escapeHtml(subs.id_verified || '-')}</strong></div>
+              <div class="item"><small>Tenure</small><strong>${escapeHtml(subs.tenure || '-')}</strong></div>
+              <div class="item"><small>Masa Aktif</small><strong>${escapeHtml(subs.exp_date || '-')}</strong></div>
+              <div class="item"><small>Grace Until</small><strong>${escapeHtml(subs.grace_until || '-')}</strong></div>
+              <div class="item"><small>VoLTE</small><strong>${escapeHtml(volteText)}</strong></div>
+            </div>
+          </div>
+
+          <div class="box">
+            <div class="title">Paket Aktif</div>
+            <div class="grid">
+              <div class="item"><small>Nama Paket</small><strong>${escapeHtml(pkg.name || '-')}</strong></div>
+              <div class="item"><small>Expired Paket</small><strong>${escapeHtml(pkg.expiry || '-')}</strong></div>
+              <div class="item"><small>Total Kuota</small><strong>${escapeHtml(quota.total || '-')}</strong></div>
+              <div class="item"><small>Sisa Kuota</small><strong>${escapeHtml(quota.remaining || '-')}</strong></div>
+              <div class="item"><small>Terpakai</small><strong>${escapeHtml(formatGB(usedGB))}</strong></div>
+              <div class="item"><small>Sisa Persen</small><strong>${remainingPercent.toFixed(1)}%</strong></div>
+            </div>
+
+            <div class="progress-wrap">
+              <div class="progress-head">
+                <span>Progress sisa kuota</span>
+                <span>${remainingPercent.toFixed(1)}%</span>
+              </div>
+              <div class="progress">
+                <div class="bar ${barClass}" style="width:${remainingPercent}%"></div>
+              </div>
+            </div>
+
+            <div class="muted">
+              Terpakai sekitar ${usedPercent.toFixed(1)}% dari total kuota.
+            </div>
+          </div>
+
+          <div class="status ok">
+            ${expired
+              ? 'Paket terdeteksi sudah expired.'
+              : remainingPercent <= 20
+                ? 'Paket aktif, tetapi sisa kuota sudah rendah.'
+                : 'Paket aktif dan data berhasil diambil.'}
+          </div>
+        `;
+      } catch (e) {
+        resBox.innerHTML = `<div class="status err">Request gagal: ${escapeHtml(e.message)}</div>`;
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Cek Kuota';
+      }
+    }
+  </script>
+</body>
+</html>
