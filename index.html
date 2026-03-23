@@ -186,28 +186,54 @@ button i{
   color:var(--text);
 }
 
-.progress-wrap{
-  margin-top:8px;
+.package-list{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+
+.package-card{
   background:#fff;
   border:1px solid var(--line);
   border-radius:14px;
-  padding:11px 12px;
+  padding:12px;
 }
 
-.progress-head{
+.package-name{
+  font-size:12.5px;
+  font-weight:800;
+  line-height:1.45;
+  margin-bottom:8px;
+  word-break:break-word;
+}
+
+.package-quota-name{
+  font-size:10.5px;
+  color:var(--muted);
+  margin-bottom:8px;
+  line-height:1.35;
+}
+
+.package-meta{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:8px;
+  gap:10px;
   margin-bottom:8px;
-  font-size:11px;
-  font-weight:700;
+  font-size:10.5px;
+  color:var(--muted);
+  line-height:1.45;
+}
+
+.package-right{
+  text-align:right;
+  font-weight:600;
 }
 
 .progress{
   width:100%;
-  height:7px;
-  background:#e3e3e3;
+  height:8px;
+  background:#dddddd;
   border-radius:999px;
   overflow:hidden;
 }
@@ -248,6 +274,12 @@ button i{
   margin-top:14px;
 }
 
+.empty-text{
+  font-size:11px;
+  color:var(--muted);
+  line-height:1.5;
+}
+
 @media(max-width:400px){
   .grid{
     grid-template-columns:1fr 1fr;
@@ -260,6 +292,15 @@ button i{
 
   .info-value{
     font-size:12px;
+  }
+
+  .package-meta{
+    flex-direction:column;
+    align-items:flex-start;
+  }
+
+  .package-right{
+    text-align:left;
   }
 }
 </style>
@@ -312,12 +353,6 @@ function escapeHtml(text){
     .replace(/'/g, '&#039;');
 }
 
-function toPercent(value){
-  const n = parseFloat(String(value ?? '').replace(/[^\d.]/g,''));
-  if(isNaN(n)) return 0;
-  return Math.max(0, Math.min(100, n));
-}
-
 function infoCard(label, value){
   return `
     <div class="info-card">
@@ -333,6 +368,46 @@ function volteValue(volte, key){
   if(val === true) return 'Ya';
   if(val === false) return 'Tidak';
   return val ? String(val) : '-';
+}
+
+function parsePercent(value){
+  const n = parseFloat(String(value ?? '').replace(',', '.').replace(/[^\d.]/g, ''));
+  if(isNaN(n)) return 0;
+  return Math.max(0, Math.min(100, n));
+}
+
+function renderPackages(packages){
+  if(!Array.isArray(packages) || !packages.length){
+    return `<div class="empty-text">Paket data tidak ditemukan.</div>`;
+  }
+
+  return `
+    <div class="package-list">
+      ${packages.map(pkg => {
+        const quota = Array.isArray(pkg.quotas) && pkg.quotas.length ? pkg.quotas[0] : {};
+        const percent = parsePercent(quota.percent);
+        const quotaName = quota.name || '-';
+        const remaining = quota.remaining || '-';
+        const total = quota.total || '-';
+
+        return `
+          <div class="package-card">
+            <div class="package-name">${escapeHtml(pkg.name || '-')}</div>
+            <div class="package-quota-name">${escapeHtml(quotaName)}</div>
+
+            <div class="package-meta">
+              <div>Expired: ${escapeHtml(pkg.expiry || '-')}</div>
+              <div class="package-right">Sisa: ${escapeHtml(remaining)} / Total: ${escapeHtml(total)}</div>
+            </div>
+
+            <div class="progress">
+              <div class="bar" style="width:${percent}%"></div>
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }
 
 async function cek(){
@@ -391,11 +466,8 @@ async function cek(){
 
     const root = data.data || {};
     const s = root.subs_info || {};
-    const p = root.package_info?.packages?.[0] || {};
-    const q = p?.quotas?.[0] || {};
     const v = s.volte || {};
-
-    const percent = toPercent(q.percent);
+    const packages = root.package_info?.packages || [];
 
     resBox.innerHTML = `
       <div class="section">
@@ -424,24 +496,7 @@ async function cek(){
           Paket Data
         </div>
 
-        <div class="grid">
-          ${infoCard('Nama Paket', escapeHtml(p.name || '-'))}
-          ${infoCard('Expired Paket', escapeHtml(p.expiry || '-'))}
-          ${infoCard('Total Kuota', escapeHtml(q.total || '-'))}
-          ${infoCard('Sisa Kuota', escapeHtml(q.remaining || '-'))}
-          ${infoCard('Sisa Persen', escapeHtml(percent + '%'))}
-          ${infoCard('Produk', escapeHtml(q.name || p.code || '-'))}
-        </div>
-
-        <div class="progress-wrap">
-          <div class="progress-head">
-            <span>Progress Kuota</span>
-            <span>${escapeHtml(percent + '%')}</span>
-          </div>
-          <div class="progress">
-            <div class="bar" style="width:${percent}%"></div>
-          </div>
-        </div>
+        ${renderPackages(packages)}
       </div>
     `;
   }catch(e){
