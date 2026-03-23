@@ -27,34 +27,55 @@ body{
   font-family:'Poppins',sans-serif;
   background:var(--bg);
   padding:14px;
+  color:var(--text);
 }
 
-.wrap{max-width:420px;margin:auto;}
+.wrap{
+  max-width:420px;
+  margin:auto;
+}
 
 .hero{
   background:#fff;
   border-radius:20px;
   padding:12px;
   display:flex;
-  gap:10px;
+  align-items:center;
+  gap:12px;
   margin-bottom:10px;
 }
 
 .hero-icon{
-  width:48px;height:48px;
-  background:#111;color:#fff;
+  width:48px;
+  height:48px;
+  background:#111;
+  color:#fff;
   border-radius:14px;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+  font-size:18px;
+}
+
+.hero-text{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .hero-title{
   font-size:12.5px;
   font-weight:800;
+  line-height:1.3;
+  margin-bottom:2px;
 }
 
 .hero-sub{
   font-size:10px;
   color:#888;
+  line-height:1.35;
 }
 
 .card{
@@ -63,13 +84,18 @@ body{
   padding:12px;
 }
 
-.input-box{position:relative;margin-bottom:8px;}
+.input-box{
+  position:relative;
+  margin-bottom:8px;
+}
 
 .input-box i{
   position:absolute;
-  left:12px;top:50%;
+  left:12px;
+  top:50%;
   transform:translateY(-50%);
-  font-size:11px;color:#aaa;
+  font-size:11px;
+  color:#9b9b9b;
 }
 
 input{
@@ -78,20 +104,44 @@ input{
   border-radius:14px;
   border:1px solid var(--line);
   padding:0 12px 0 36px;
-  font-size:11.5px;
+  font-size:12px;
+  font-weight:700;
+  font-family:inherit;
+  outline:none;
+  color:var(--text);
+  background:#fff;
+}
+
+input::placeholder{
+  color:#a5a5a5;
+  font-weight:500;
 }
 
 button{
   width:100%;
   height:44px;
-  border:none;border-radius:16px;
-  background:#111;color:#fff;
-  font-size:12px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
+  border:none;
+  border-radius:16px;
+  background:#111;
+  color:#fff;
+  font-size:12px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   gap:6px;
+  cursor:pointer;
+  font-family:inherit;
 }
 
-.result{margin-top:8px;}
+button:disabled{
+  opacity:.7;
+  cursor:not-allowed;
+}
+
+.result{
+  margin-top:8px;
+}
 
 .section{
   margin-top:8px;
@@ -99,6 +149,25 @@ button{
   border:1px solid var(--line);
   border-radius:16px;
   padding:10px;
+}
+
+.section-head{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin-bottom:6px;
+}
+
+.section-head i{
+  font-size:11px;
+  color:#333;
+  flex-shrink:0;
+}
+
+.section-title{
+  font-size:11.5px;
+  font-weight:800;
+  line-height:1.3;
 }
 
 .grid{
@@ -117,11 +186,15 @@ button{
 .info-label{
   font-size:9.5px;
   color:#888;
+  line-height:1.35;
 }
 
 .info-value{
   font-size:11.5px;
   font-weight:700;
+  margin-top:2px;
+  line-height:1.4;
+  word-break:break-word;
 }
 
 .package-card{
@@ -132,20 +205,32 @@ button{
   margin-bottom:6px;
 }
 
+.package-card:last-child{
+  margin-bottom:0;
+}
+
 .package-head{
   display:flex;
   justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
   margin-bottom:8px;
 }
 
 .package-name{
-  font-size:11.8px;
-  font-weight:800;
+  font-size:11.4px;
+  font-weight:700;
+  line-height:1.45;
+  flex:1;
+  word-break:break-word;
 }
 
 .package-date{
   font-size:10px;
   color:#777;
+  line-height:1.35;
+  text-align:right;
+  flex-shrink:0;
 }
 
 .quota-item{
@@ -154,27 +239,43 @@ button{
   margin-top:8px;
 }
 
+.quota-item:first-of-type{
+  border-top:none;
+  padding-top:0;
+  margin-top:0;
+}
+
 .quota-row{
   display:flex;
   justify-content:space-between;
+  align-items:flex-start;
+  gap:10px;
   margin-bottom:6px;
 }
 
 .quota-name{
-  font-size:10.5px;
-  font-weight:700;
+  font-size:10.3px;
+  font-weight:600;
+  line-height:1.4;
+  flex:1;
+  word-break:break-word;
 }
 
 .quota-amount{
   font-size:10px;
-  color:#555;
+  color:#5f5f5f;
   font-weight:600;
+  line-height:1.4;
+  text-align:right;
+  flex-shrink:0;
+  white-space:nowrap;
 }
 
 .progress{
   height:6px;
   background:#ddd;
   border-radius:999px;
+  overflow:hidden;
 }
 
 .bar{
@@ -186,11 +287,37 @@ button{
 .bar.yellow{background:var(--yellow);}
 .bar.red{background:var(--red);}
 
+.status{
+  margin-top:8px;
+  padding:10px 11px;
+  border-radius:14px;
+  font-size:11px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+  line-height:1.5;
+  background:#fff;
+  border:1px solid #ddd;
+}
+
 .footer{
   text-align:center;
   font-size:10px;
   color:#999;
   margin-top:10px;
+}
+
+.empty-text{
+  font-size:10.5px;
+  color:#888;
+  line-height:1.5;
+}
+
+@media(max-width:400px){
+  .grid{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
 }
 </style>
 </head>
@@ -198,42 +325,51 @@ button{
 <body>
 <div class="wrap">
 
-<div class="hero">
-  <div class="hero-icon">
-    <i class="fa-solid fa-signal"></i>
-  </div>
-  <div>
-    <div class="hero-title">Cek Kuota XL & AXIS</div>
-    <div class="hero-sub">by XC-Store Apps</div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="input-box">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input id="nomor" placeholder="Masukkan nomor..." />
+  <div class="hero">
+    <div class="hero-icon">
+      <i class="fa-solid fa-signal"></i>
+    </div>
+    <div class="hero-text">
+      <div class="hero-title">Cek Kuota XL & AXIS</div>
+      <div class="hero-sub">by XC-Store Apps</div>
+    </div>
   </div>
 
-  <button onclick="cek()" id="btnCek">
-    <i class="fa-solid fa-paper-plane"></i> Cek Kuota
-  </button>
+  <div class="card">
+    <div class="input-box">
+      <i class="fa-solid fa-phone"></i>
+      <input id="nomor" type="tel" placeholder="Masukkan nomor..." />
+    </div>
 
-  <div id="result" class="result"></div>
-</div>
+    <button onclick="cek()" id="btnCek">
+      <i class="fa-solid fa-paper-plane"></i> Cek Kuota
+    </button>
 
-<div class="footer">Powered by XC-Store</div>
+    <div id="result" class="result"></div>
+  </div>
 
+  <div class="footer">Powered by XC-Store</div>
 </div>
 
 <script>
 function normalizeNumber(input){
-  let n = input.replace(/\D/g,'');
+  let n = String(input || '').replace(/\D/g,'');
   if(n.startsWith('0')) n = '62' + n.slice(1);
   return n;
 }
 
+function escapeHtml(text){
+  return String(text ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function toggleDetail(){
   const el = document.getElementById('detailSubs');
+  if(!el) return;
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
@@ -244,10 +380,78 @@ function infoCard(label,val){
   </div>`;
 }
 
+function parsePercent(value){
+  const n = parseFloat(String(value ?? '').replace(',', '.').replace(/[^\d.]/g,''));
+  if(isNaN(n)) return 0;
+  return Math.max(0, Math.min(100, n));
+}
+
 function getColor(p){
-  if(p<=20) return 'red';
-  if(p<=60) return 'yellow';
+  if(p <= 20) return 'red';
+  if(p <= 60) return 'yellow';
   return 'green';
+}
+
+function renderSubsCompact(s, nomor, v){
+  return `
+    <div class="section">
+      <div style="font-size:11.5px;font-weight:700;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div style="line-height:1.45;">
+          ${escapeHtml(s.msisdn || nomor)} • ${escapeHtml(s.operator || '-')} • ${escapeHtml(s.net_type || '-')}
+        </div>
+        <div onclick="toggleDetail()" style="font-size:10px;color:#666;cursor:pointer;white-space:nowrap;font-weight:700;">
+          Detail
+        </div>
+      </div>
+
+      <div id="detailSubs" style="display:none;margin-top:6px;">
+        <div class="grid">
+          ${infoCard('Registrasi', s.id_verified || '-')}
+          ${infoCard('Umur', s.tenure || '-')}
+          ${infoCard('Aktif', s.exp_date || '-')}
+          ${infoCard('Tenggang', s.grace_until || '-')}
+          ${infoCard('Volte Area', v && v.area ? 'Ya' : 'Tidak')}
+          ${infoCard('Volte SIM', v && v.simcard ? 'Ya' : 'Tidak')}
+          ${infoCard('Volte Device', v && v.device ? 'Ya' : 'Tidak')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderPackages(packages){
+  if(!Array.isArray(packages) || !packages.length){
+    return `<div class="empty-text">Paket data tidak ditemukan.</div>`;
+  }
+
+  return packages.map(p => {
+    const quotas = Array.isArray(p.quotas) ? p.quotas : [];
+
+    return `
+      <div class="package-card">
+        <div class="package-head">
+          <div class="package-name">${escapeHtml(p.name || '-')}</div>
+          <div class="package-date">${escapeHtml(p.expiry || '-')}</div>
+        </div>
+
+        ${quotas.map(q => {
+          const percent = parsePercent(q.percent);
+          return `
+            <div class="quota-item">
+              <div class="quota-row">
+                <div class="quota-name">${escapeHtml(q.name || '-')}</div>
+                <div class="quota-amount">${escapeHtml(q.remaining || '-')} / ${escapeHtml(q.total || '-')}</div>
+              </div>
+
+              <div class="progress">
+                <div class="bar ${getColor(percent)}" style="width:${percent}%"></div>
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+  }).join('');
 }
 
 async function cek(){
@@ -255,71 +459,72 @@ async function cek(){
   const resBox = document.getElementById('result');
   const btn = document.getElementById('btnCek');
 
-  btn.disabled=true;
-  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i>';
-
-  const res = await fetch('/api/cek?number='+nomor);
-  const data = await res.json();
-
-  const s = data.data.subs_info;
-  const v = s.volte;
-  const packages = data.data.package_info.packages;
-
-  resBox.innerHTML = `
-    <div class="section">
-      <div style="font-size:11.5px;font-weight:700;display:flex;justify-content:space-between;">
-        <div>${s.msisdn} • ${s.operator} • ${s.net_type}</div>
-        <div onclick="toggleDetail()" style="font-size:10px;color:#666;cursor:pointer;">Detail</div>
+  if(!nomor){
+    resBox.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Nomor belum diisi</span>
       </div>
+    `;
+    return;
+  }
 
-      <div id="detailSubs" style="display:none;margin-top:6px;">
-        <div class="grid">
-          ${infoCard('Registrasi',s.id_verified)}
-          ${infoCard('Umur',s.tenure)}
-          ${infoCard('Aktif',s.exp_date)}
-          ${infoCard('Tenggang',s.grace_until)}
-          ${infoCard('Volte Area',v.area?'Ya':'Tidak')}
-          ${infoCard('Volte SIM',v.simcard?'Ya':'Tidak')}
-          ${infoCard('Volte Device',v.device?'Ya':'Tidak')}
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+  try{
+    const res = await fetch('/api/cek?number=' + encodeURIComponent(nomor));
+    const raw = await res.text();
+
+    let data;
+    try{
+      data = JSON.parse(raw);
+    }catch{
+      resBox.innerHTML = `
+        <div class="status">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Response API bukan JSON valid</span>
         </div>
+      `;
+      return;
+    }
+
+    if(!data.success){
+      resBox.innerHTML = `
+        <div class="status">
+          <i class="fa-solid fa-circle-xmark"></i>
+          <span>${escapeHtml(data.message || 'Gagal mengambil data')}</span>
+        </div>
+      `;
+      return;
+    }
+
+    const s = data.data?.subs_info || {};
+    const v = s.volte || {};
+    const packages = data.data?.package_info?.packages || [];
+
+    resBox.innerHTML = `
+      ${renderSubsCompact(s, nomor, v)}
+
+      <div class="section">
+        <div class="section-head">
+          <i class="fa-solid fa-box-open"></i>
+          <div class="section-title">Paket Data</div>
+        </div>
+        ${renderPackages(packages)}
       </div>
-    </div>
-
-    <div class="section">
-      <div style="font-size:11.5px;font-weight:800;margin-bottom:6px;">
-        Paket Data
+    `;
+  }catch(e){
+    resBox.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Error ambil data</span>
       </div>
-
-      ${packages.map(p=>{
-        return `
-        <div class="package-card">
-          <div class="package-head">
-            <div class="package-name">${p.name}</div>
-            <div class="package-date">${p.expiry}</div>
-          </div>
-
-          ${p.quotas.map(q=>{
-            const percent=parseFloat(q.percent)||0;
-            return `
-            <div class="quota-item">
-              <div class="quota-row">
-                <div class="quota-name">${q.name}</div>
-                <div class="quota-amount">${q.remaining} / ${q.total}</div>
-              </div>
-
-              <div class="progress">
-                <div class="bar ${getColor(percent)}" style="width:${percent}%"></div>
-              </div>
-            </div>`;
-          }).join('')}
-
-        </div>`;
-      }).join('')}
-    </div>
-  `;
-
-  btn.disabled=false;
-  btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Cek Kuota';
+    `;
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Cek Kuota';
+  }
 }
 </script>
 
