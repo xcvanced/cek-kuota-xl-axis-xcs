@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
   <style>
     * {
@@ -17,7 +18,7 @@
     }
 
     :root {
-      --bg: #f7f7f2;
+      --bg: #f6f6f1;
       --card: #ffffff;
       --text: #111111;
       --text-soft: #6b7280;
@@ -25,144 +26,166 @@
       --yellow: #facc15;
       --yellow-dark: #eab308;
       --black: #111111;
-      --soft-black: #1f1f1f;
-      --soft-yellow: #fff9db;
-      --success-bg: #f6fef9;
+      --soft: #fafafa;
+      --soft-yellow: #fff8d8;
+      --success-bg: #f0fdf4;
       --success-text: #166534;
-      --error-bg: #fff5f5;
-      --error-text: #b42318;
-      --shadow: 0 10px 30px rgba(17, 17, 17, 0.08);
-      --radius-xl: 26px;
-      --radius-lg: 18px;
-      --radius-md: 14px;
-      --radius-sm: 12px;
+      --error-bg: #fef2f2;
+      --error-text: #b91c1c;
+      --shadow: 0 10px 26px rgba(17, 17, 17, 0.07);
     }
 
     body {
       font-family: 'Poppins', sans-serif;
       background:
-        radial-gradient(circle at top left, rgba(250, 204, 21, 0.16), transparent 28%),
-        linear-gradient(180deg, #fffef8 0%, #f5f5ef 100%);
+        radial-gradient(circle at top left, rgba(250,204,21,.12), transparent 28%),
+        linear-gradient(180deg, #fffef9 0%, #f4f4ee 100%);
       color: var(--text);
       min-height: 100vh;
-      padding: 20px 14px;
+      padding: 14px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
     }
 
-    .wrapper {
+    .wrap {
       width: 100%;
-      max-width: 430px;
+      max-width: 400px;
     }
 
     .card {
       background: var(--card);
-      border: 1px solid rgba(17, 17, 17, 0.06);
-      border-radius: var(--radius-xl);
-      box-shadow: var(--shadow);
+      border: 1px solid rgba(17,17,17,.06);
+      border-radius: 22px;
       overflow: hidden;
+      box-shadow: var(--shadow);
     }
 
-    .hero {
-      position: relative;
-      padding: 24px 20px 20px;
-      background:
-        linear-gradient(135deg, #111111 0%, #1f1f1f 100%);
+    .top {
+      background: linear-gradient(135deg, #111111 0%, #1d1d1d 100%);
       color: #fff;
+      padding: 16px;
+      position: relative;
     }
 
-    .hero::after {
+    .top::after {
       content: "";
       position: absolute;
-      top: -40px;
-      right: -40px;
-      width: 120px;
-      height: 120px;
-      background: rgba(250, 204, 21, 0.18);
+      top: -28px;
+      right: -28px;
+      width: 90px;
+      height: 90px;
       border-radius: 50%;
-      filter: blur(8px);
+      background: rgba(250,204,21,.18);
+      filter: blur(6px);
     }
 
     .brand {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.08);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: #fff8cc;
-      padding: 8px 12px;
+      gap: 7px;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #fff4b5;
+      padding: 6px 10px;
       border-radius: 999px;
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 700;
       letter-spacing: .4px;
-      margin-bottom: 14px;
+      margin-bottom: 10px;
       position: relative;
       z-index: 1;
     }
 
-    .brand-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--yellow);
-      box-shadow: 0 0 10px rgba(250, 204, 21, 0.8);
+    .brand i {
+      color: var(--yellow);
+      font-size: 11px;
+    }
+
+    .title-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .title-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 12px;
+      background: rgba(250,204,21,.14);
+      color: var(--yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+      border: 1px solid rgba(250,204,21,.18);
     }
 
     h2 {
-      font-size: 24px;
+      font-size: 19px;
+      line-height: 1.35;
       font-weight: 800;
-      line-height: 1.3;
-      margin-bottom: 8px;
-      position: relative;
-      z-index: 1;
+      margin-bottom: 4px;
     }
 
     .sub {
-      color: rgba(255,255,255,0.75);
-      font-size: 13px;
-      line-height: 1.7;
-      position: relative;
-      z-index: 1;
+      color: rgba(255,255,255,.74);
+      font-size: 11.5px;
+      line-height: 1.6;
     }
 
     .content {
-      padding: 18px;
-    }
-
-    .input-wrap {
-      margin-bottom: 14px;
+      padding: 14px;
     }
 
     .label {
-      display: block;
-      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 11px;
       font-weight: 700;
       color: var(--text);
       margin-bottom: 8px;
+    }
+
+    .label i {
+      color: #111;
+      font-size: 12px;
     }
 
     .input-box {
       position: relative;
+      margin-bottom: 10px;
+    }
+
+    .input-box i {
+      position: absolute;
+      left: 13px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #888;
+      font-size: 14px;
     }
 
     input {
       width: 100%;
-      height: 54px;
-      padding: 0 16px;
+      height: 48px;
+      padding: 0 14px 0 40px;
+      border-radius: 14px;
       border: 1px solid var(--line);
-      border-radius: 16px;
       outline: none;
-      font-size: 14px;
-      font-family: inherit;
       background: #fff;
       color: var(--text);
+      font-size: 13px;
+      font-family: inherit;
       transition: .2s ease;
     }
 
     input:focus {
       border-color: var(--yellow);
-      box-shadow: 0 0 0 4px rgba(250, 204, 21, 0.14);
+      box-shadow: 0 0 0 4px rgba(250,204,21,.12);
     }
 
     input::placeholder {
@@ -171,118 +194,130 @@
 
     button {
       width: 100%;
-      height: 54px;
+      height: 48px;
       border: none;
-      border-radius: 16px;
+      border-radius: 14px;
       background: linear-gradient(180deg, var(--yellow) 0%, var(--yellow-dark) 100%);
-      color: var(--black);
+      color: #111;
       font-family: inherit;
-      font-size: 15px;
+      font-size: 13px;
       font-weight: 800;
       cursor: pointer;
       transition: .2s ease;
-      box-shadow: 0 10px 18px rgba(250, 204, 21, 0.25);
-    }
-
-    button:hover {
-      transform: translateY(-1px);
-    }
-
-    button:active {
-      transform: translateY(0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 8px 16px rgba(250,204,21,.20);
     }
 
     button:disabled {
       opacity: .7;
       cursor: not-allowed;
-      transform: none;
     }
 
     .result {
-      margin-top: 16px;
+      margin-top: 10px;
     }
 
     .box {
       background: #fff;
       border: 1px solid var(--line);
-      border-radius: 18px;
-      padding: 15px;
-      margin-top: 12px;
+      border-radius: 16px;
+      padding: 12px;
+      margin-top: 10px;
     }
 
-    .title {
+    .box-title {
       display: flex;
       align-items: center;
       gap: 8px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
+      margin-bottom: 10px;
       color: var(--black);
-      margin-bottom: 12px;
     }
 
-    .title::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--yellow);
+    .box-title i {
+      width: 24px;
+      height: 24px;
+      border-radius: 8px;
+      background: var(--soft-yellow);
+      color: #111;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
       flex-shrink: 0;
     }
 
     .grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 10px;
+      gap: 8px;
     }
 
     .item {
-      background: #fafafa;
+      background: var(--soft);
       border: 1px solid #efefef;
-      border-radius: 14px;
-      padding: 11px 12px;
+      border-radius: 12px;
+      padding: 10px;
+    }
+
+    .item-top {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 4px;
+    }
+
+    .item-top i {
+      color: #777;
+      font-size: 11px;
+      width: 12px;
+      text-align: center;
+      flex-shrink: 0;
     }
 
     .item small {
       display: block;
       color: var(--text-soft);
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 600;
-      margin-bottom: 5px;
-      line-height: 1.4;
+      line-height: 1.35;
     }
 
     .item strong {
       display: block;
       color: var(--text);
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 700;
-      line-height: 1.5;
+      line-height: 1.45;
       word-break: break-word;
     }
 
     .progress-wrap {
-      margin-top: 14px;
-      padding: 12px;
+      margin-top: 10px;
       background: var(--soft-yellow);
-      border: 1px solid rgba(250, 204, 21, 0.28);
-      border-radius: 14px;
+      border: 1px solid rgba(250,204,21,.25);
+      border-radius: 12px;
+      padding: 10px;
     }
 
     .progress-head {
       display: flex;
       justify-content: space-between;
-      align-items: center;
       gap: 10px;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       color: var(--black);
     }
 
     .progress {
       width: 100%;
-      height: 10px;
-      background: rgba(17, 17, 17, 0.08);
+      height: 8px;
+      background: rgba(17,17,17,.08);
       border-radius: 999px;
       overflow: hidden;
     }
@@ -290,7 +325,7 @@
     .bar {
       height: 100%;
       width: 0%;
-      background: linear-gradient(90deg, #111111 0%, #2d2d2d 100%);
+      background: linear-gradient(90deg, #111111 0%, #2b2b2b 100%);
       border-radius: 999px;
       transition: width .35s ease;
     }
@@ -304,21 +339,29 @@
     }
 
     .muted {
+      margin-top: 8px;
       color: var(--text-soft);
-      font-size: 12px;
-      margin-top: 10px;
-      line-height: 1.6;
+      font-size: 10.5px;
+      line-height: 1.5;
     }
 
     .status {
-      margin-top: 12px;
-      padding: 13px 14px;
-      border-radius: 15px;
-      font-size: 13px;
-      line-height: 1.65;
+      margin-top: 10px;
+      padding: 11px 12px;
+      border-radius: 13px;
+      font-size: 12px;
+      line-height: 1.55;
       font-weight: 600;
       word-break: break-word;
       white-space: pre-wrap;
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .status i {
+      margin-top: 1px;
+      flex-shrink: 0;
     }
 
     .ok {
@@ -330,20 +373,21 @@
     .err {
       background: var(--error-bg);
       color: var(--error-text);
-      border: 1px solid #fecdca;
+      border: 1px solid #fecaca;
     }
 
     .loading-box {
       display: flex;
       align-items: center;
-      gap: 10px;
-      font-size: 13px;
+      gap: 9px;
+      font-size: 12px;
+      font-weight: 600;
       color: var(--text);
     }
 
     .loading-dot {
-      width: 10px;
-      height: 10px;
+      width: 9px;
+      height: 9px;
       border-radius: 50%;
       background: var(--yellow);
       animation: pulse 1s infinite ease-in-out;
@@ -351,72 +395,64 @@
     }
 
     .footer-note {
+      margin-top: 10px;
       text-align: center;
-      font-size: 11px;
       color: var(--text-soft);
-      margin-top: 14px;
+      font-size: 10.5px;
       line-height: 1.5;
-      padding-bottom: 2px;
     }
 
     @keyframes pulse {
       0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.3); opacity: .55; }
+      50% { transform: scale(1.35); opacity: .55; }
     }
 
     @media (max-width: 420px) {
-      .hero {
-        padding: 22px 16px 18px;
-      }
-
-      .content {
-        padding: 14px;
-      }
-
-      h2 {
-        font-size: 21px;
-      }
-
-      .sub {
-        font-size: 12px;
-      }
-
       .grid {
         grid-template-columns: 1fr;
       }
 
-      .item strong {
-        font-size: 12.5px;
-      }
-
-      button,
-      input {
-        height: 52px;
+      h2 {
+        font-size: 18px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="wrapper">
+  <div class="wrap">
     <div class="card">
-      <div class="hero">
+      <div class="top">
         <div class="brand">
-          <span class="brand-dot"></span>
-          XC-STORE CHECKER
+          <i class="fa-solid fa-bolt"></i>
+          XC-STORE
         </div>
-        <h2>Cek Kuota XL & AXIS</h2>
-        <p class="sub">Masukkan nomor XL atau AXIS untuk melihat informasi kartu, paket aktif, dan sisa kuota secara praktis.</p>
+
+        <div class="title-row">
+          <div class="title-icon">
+            <i class="fa-solid fa-signal"></i>
+          </div>
+          <div>
+            <h2>Cek Kuota XL & AXIS</h2>
+            <p class="sub">Cek info kartu, paket aktif, dan sisa kuota dengan tampilan ringkas dan rapi.</p>
+          </div>
+        </div>
       </div>
 
       <div class="content">
-        <div class="input-wrap">
-          <label class="label" for="nomor">Nomor Tujuan</label>
-          <div class="input-box">
-            <input id="nomor" type="tel" placeholder="Contoh: 0817xxxx atau 62817xxxx" />
-          </div>
+        <label class="label" for="nomor">
+          <i class="fa-solid fa-mobile-screen-button"></i>
+          Nomor Tujuan
+        </label>
+
+        <div class="input-box">
+          <i class="fa-solid fa-phone"></i>
+          <input id="nomor" type="tel" placeholder="0817xxxx / 62817xxxx" />
         </div>
 
-        <button id="btnCek" onclick="cek()">Cek Kuota</button>
+        <button id="btnCek" onclick="cek()">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Cek Kuota</span>
+        </button>
 
         <div class="result" id="result"></div>
         <div class="footer-note">Powered by XC-Store</div>
@@ -464,6 +500,18 @@
         .replace(/'/g, '&#039;');
     }
 
+    function itemCard(icon, label, value) {
+      return `
+        <div class="item">
+          <div class="item-top">
+            <i class="${icon}"></i>
+            <small>${label}</small>
+          </div>
+          <strong>${value}</strong>
+        </div>
+      `;
+    }
+
     async function cek() {
       const input = document.getElementById('nomor');
       const btn = document.getElementById('btnCek');
@@ -472,12 +520,17 @@
       const nomor = normalizeNumber(input.value);
 
       if (!nomor) {
-        resBox.innerHTML = `<div class="status err">Nomor belum diisi.</div>`;
+        resBox.innerHTML = `
+          <div class="status err">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <div>Nomor belum diisi.</div>
+          </div>
+        `;
         return;
       }
 
       btn.disabled = true;
-      btn.textContent = 'Memproses...';
+      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Memproses...</span>`;
       resBox.innerHTML = `
         <div class="box">
           <div class="loading-box">
@@ -496,12 +549,22 @@
         try {
           data = JSON.parse(raw);
         } catch {
-          resBox.innerHTML = `<div class="status err">Response bukan JSON valid.\n\n${escapeHtml(raw)}</div>`;
+          resBox.innerHTML = `
+            <div class="status err">
+              <i class="fa-solid fa-triangle-exclamation"></i>
+              <div>Response bukan JSON valid.\n\n${escapeHtml(raw)}</div>
+            </div>
+          `;
           return;
         }
 
         if (!data.success) {
-          resBox.innerHTML = `<div class="status err">${escapeHtml(data.message || 'Gagal mengambil data.')}</div>`;
+          resBox.innerHTML = `
+            <div class="status err">
+              <i class="fa-solid fa-circle-xmark"></i>
+              <div>${escapeHtml(data.message || 'Gagal mengambil data.')}</div>
+            </div>
+          `;
           return;
         }
 
@@ -513,15 +576,22 @@
         if (!packages.length) {
           resBox.innerHTML = `
             <div class="box">
-              <div class="title">Informasi Nomor</div>
+              <div class="box-title">
+                <i class="fa-solid fa-sim-card"></i>
+                <span>Informasi Nomor</span>
+              </div>
               <div class="grid">
-                <div class="item"><small>Nomor</small><strong>${escapeHtml(subs.msisdn || nomor)}</strong></div>
-                <div class="item"><small>Operator</small><strong>${escapeHtml(subs.operator || '-')}</strong></div>
-                <div class="item"><small>Jaringan</small><strong>${escapeHtml(subs.net_type || '-')}</strong></div>
-                <div class="item"><small>Masa Aktif</small><strong>${escapeHtml(subs.exp_date || '-')}</strong></div>
+                ${itemCard('fa-solid fa-phone', 'Nomor', escapeHtml(subs.msisdn || nomor))}
+                ${itemCard('fa-solid fa-tower-cell', 'Operator', escapeHtml(subs.operator || '-'))}
+                ${itemCard('fa-solid fa-signal', 'Jaringan', escapeHtml(subs.net_type || '-'))}
+                ${itemCard('fa-solid fa-calendar-days', 'Masa Aktif', escapeHtml(subs.exp_date || '-'))}
               </div>
             </div>
-            <div class="status err">${escapeHtml(packageInfo.error_message || 'Paket tidak ditemukan pada nomor ini.')}</div>
+
+            <div class="status err">
+              <i class="fa-solid fa-circle-exclamation"></i>
+              <div>${escapeHtml(packageInfo.error_message || 'Paket tidak ditemukan pada nomor ini.')}</div>
+            </div>
           `;
           return;
         }
@@ -556,28 +626,34 @@
 
         resBox.innerHTML = `
           <div class="box">
-            <div class="title">Informasi Nomor</div>
+            <div class="box-title">
+              <i class="fa-solid fa-sim-card"></i>
+              <span>Informasi Nomor</span>
+            </div>
             <div class="grid">
-              <div class="item"><small>Nomor</small><strong>${escapeHtml(subs.msisdn || nomor)}</strong></div>
-              <div class="item"><small>Operator</small><strong>${escapeHtml(subs.operator || '-')}</strong></div>
-              <div class="item"><small>Jaringan</small><strong>${escapeHtml(subs.net_type || '-')}</strong></div>
-              <div class="item"><small>Verifikasi ID</small><strong>${escapeHtml(subs.id_verified || '-')}</strong></div>
-              <div class="item"><small>Tenure</small><strong>${escapeHtml(subs.tenure || '-')}</strong></div>
-              <div class="item"><small>Masa Aktif</small><strong>${escapeHtml(subs.exp_date || '-')}</strong></div>
-              <div class="item"><small>Grace Until</small><strong>${escapeHtml(subs.grace_until || '-')}</strong></div>
-              <div class="item"><small>VoLTE</small><strong>${escapeHtml(volteText)}</strong></div>
+              ${itemCard('fa-solid fa-phone', 'Nomor', escapeHtml(subs.msisdn || nomor))}
+              ${itemCard('fa-solid fa-tower-cell', 'Operator', escapeHtml(subs.operator || '-'))}
+              ${itemCard('fa-solid fa-signal', 'Jaringan', escapeHtml(subs.net_type || '-'))}
+              ${itemCard('fa-solid fa-id-card', 'Verifikasi ID', escapeHtml(subs.id_verified || '-'))}
+              ${itemCard('fa-solid fa-clock', 'Tenure', escapeHtml(subs.tenure || '-'))}
+              ${itemCard('fa-solid fa-calendar-days', 'Masa Aktif', escapeHtml(subs.exp_date || '-'))}
+              ${itemCard('fa-solid fa-hourglass-end', 'Grace Until', escapeHtml(subs.grace_until || '-'))}
+              ${itemCard('fa-solid fa-wifi', 'VoLTE', escapeHtml(volteText))}
             </div>
           </div>
 
           <div class="box">
-            <div class="title">Paket Aktif</div>
+            <div class="box-title">
+              <i class="fa-solid fa-box-open"></i>
+              <span>Paket Aktif</span>
+            </div>
             <div class="grid">
-              <div class="item"><small>Nama Paket</small><strong>${escapeHtml(pkg.name || '-')}</strong></div>
-              <div class="item"><small>Expired Paket</small><strong>${escapeHtml(pkg.expiry || '-')}</strong></div>
-              <div class="item"><small>Total Kuota</small><strong>${escapeHtml(quota.total || '-')}</strong></div>
-              <div class="item"><small>Sisa Kuota</small><strong>${escapeHtml(quota.remaining || '-')}</strong></div>
-              <div class="item"><small>Terpakai</small><strong>${escapeHtml(formatGB(usedGB))}</strong></div>
-              <div class="item"><small>Sisa Persen</small><strong>${remainingPercent.toFixed(1)}%</strong></div>
+              ${itemCard('fa-solid fa-tag', 'Nama Paket', escapeHtml(pkg.name || '-'))}
+              ${itemCard('fa-solid fa-calendar-xmark', 'Expired Paket', escapeHtml(pkg.expiry || '-'))}
+              ${itemCard('fa-solid fa-database', 'Total Kuota', escapeHtml(quota.total || '-'))}
+              ${itemCard('fa-solid fa-battery-three-quarters', 'Sisa Kuota', escapeHtml(quota.remaining || '-'))}
+              ${itemCard('fa-solid fa-chart-simple', 'Terpakai', escapeHtml(formatGB(usedGB)))}
+              ${itemCard('fa-solid fa-percent', 'Sisa Persen', remainingPercent.toFixed(1) + '%')}
             </div>
 
             <div class="progress-wrap">
@@ -596,18 +672,26 @@
           </div>
 
           <div class="status ok">
-            ${expired
-              ? 'Paket terdeteksi sudah expired.'
-              : remainingPercent <= 20
-                ? 'Paket aktif, tetapi sisa kuota sudah rendah.'
-                : 'Paket aktif dan data berhasil diambil.'}
+            <i class="fa-solid fa-circle-check"></i>
+            <div>
+              ${expired
+                ? 'Paket terdeteksi sudah expired.'
+                : remainingPercent <= 20
+                  ? 'Paket aktif, tetapi sisa kuota sudah rendah.'
+                  : 'Paket aktif dan data berhasil diambil.'}
+            </div>
           </div>
         `;
       } catch (e) {
-        resBox.innerHTML = `<div class="status err">Request gagal: ${escapeHtml(e.message)}</div>`;
+        resBox.innerHTML = `
+          <div class="status err">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <div>Request gagal: ${escapeHtml(e.message)}</div>
+          </div>
+        `;
       } finally {
         btn.disabled = false;
-        btn.textContent = 'Cek Kuota';
+        btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i><span>Cek Kuota</span>`;
       }
     }
   </script>
