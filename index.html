@@ -197,7 +197,9 @@ button:disabled{
 .package-date{
   font-size:10.5px;
   color:#777;
+  text-align:right;
   white-space:nowrap;
+  flex-shrink:0;
   padding-top:2px;
 }
 
@@ -235,6 +237,7 @@ button:disabled{
   text-align:right;
   line-height:1.45;
   white-space:nowrap;
+  flex-shrink:0;
 }
 
 .progress{
@@ -284,18 +287,6 @@ button:disabled{
   .grid{
     grid-template-columns:1fr 1fr;
     gap:7px;
-  }
-
-  .quota-row,
-  .package-head{
-    flex-direction:column;
-    align-items:flex-start;
-  }
-
-  .quota-amount,
-  .package-date{
-    text-align:left;
-    white-space:normal;
   }
 }
 </style>
