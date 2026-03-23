@@ -18,15 +18,22 @@
   --muted:#8f8f8f;
   --line:#e6e6e6;
   --soft:#f7f7f8;
+  --green:#16a34a;
+  --yellow:#ca8a04;
+  --red:#dc2626;
 }
 
 body{
   font-family:'Poppins',sans-serif;
   background:var(--bg);
   padding:14px;
+  color:var(--text);
 }
 
-.wrap{max-width:420px;margin:auto;}
+.wrap{
+  max-width:420px;
+  margin:auto;
+}
 
 .hero{
   background:#fff;
@@ -38,15 +45,28 @@ body{
 }
 
 .hero-icon{
-  width:52px;height:52px;
-  background:#111;color:#fff;
+  width:52px;
+  height:52px;
+  background:#111;
+  color:#fff;
   border-radius:16px;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   flex-shrink:0;
 }
 
-.hero-title{font-size:13.5px;font-weight:800;}
-.hero-sub{font-size:11px;color:#888;}
+.hero-title{
+  font-size:13.5px;
+  font-weight:800;
+  line-height:1.35;
+}
+
+.hero-sub{
+  font-size:11px;
+  color:#888;
+  margin-top:2px;
+}
 
 .card{
   background:#fff;
@@ -54,31 +74,49 @@ body{
   padding:14px;
 }
 
-.input-box{position:relative;margin-bottom:10px;}
+.input-box{
+  position:relative;
+  margin-bottom:10px;
+}
 
 .input-box i{
   position:absolute;
-  left:14px;top:50%;
+  left:14px;
+  top:50%;
   transform:translateY(-50%);
-  font-size:12px;color:#aaa;
+  font-size:12px;
+  color:#aaa;
 }
 
 input{
-  width:100%;height:44px;
+  width:100%;
+  height:44px;
   border-radius:16px;
   border:1px solid var(--line);
   padding:0 14px 0 40px;
   font-size:12.5px;
   font-family:inherit;
   outline:none;
+  color:var(--text);
+  background:#fff;
+}
+
+input::placeholder{
+  color:#aaa;
 }
 
 button{
-  width:100%;height:46px;
-  border:none;border-radius:18px;
-  background:#111;color:#fff;
-  font-size:13px;font-weight:700;
-  display:flex;align-items:center;justify-content:center;
+  width:100%;
+  height:46px;
+  border:none;
+  border-radius:18px;
+  background:#111;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   gap:6px;
   cursor:pointer;
   font-family:inherit;
@@ -89,7 +127,9 @@ button:disabled{
   cursor:not-allowed;
 }
 
-.result{margin-top:10px;}
+.result{
+  margin-top:10px;
+}
 
 .section{
   margin-top:10px;
@@ -138,17 +178,27 @@ button:disabled{
   margin-bottom:0;
 }
 
+.package-head{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:10px;
+}
+
 .package-name{
   font-size:12.5px;
   font-weight:800;
   line-height:1.45;
-  margin-bottom:4px;
+  flex:1;
+  word-break:break-word;
 }
 
-.package-exp{
+.package-date{
   font-size:10.5px;
   color:#777;
-  margin-bottom:10px;
+  white-space:nowrap;
+  padding-top:2px;
 }
 
 .quota-item{
@@ -163,35 +213,46 @@ button:disabled{
   margin-top:0;
 }
 
+.quota-row{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:8px;
+}
+
 .quota-name{
   font-size:11px;
   font-weight:700;
   line-height:1.4;
-  margin-bottom:6px;
+  flex:1;
+  word-break:break-word;
 }
 
-.package-meta{
+.quota-amount{
   font-size:10.5px;
   color:#666;
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  margin-bottom:6px;
+  text-align:right;
   line-height:1.45;
+  white-space:nowrap;
 }
 
 .progress{
   height:8px;
-  background:#ddd;
+  background:#e3e3e3;
   border-radius:999px;
   overflow:hidden;
 }
 
 .bar{
   height:100%;
-  background:#111;
+  width:0%;
   border-radius:999px;
 }
+
+.bar.green{ background:var(--green); }
+.bar.yellow{ background:var(--yellow); }
+.bar.red{ background:var(--red); }
 
 .status{
   margin-top:10px;
@@ -225,9 +286,16 @@ button:disabled{
     gap:7px;
   }
 
-  .package-meta{
+  .quota-row,
+  .package-head{
     flex-direction:column;
     align-items:flex-start;
+  }
+
+  .quota-amount,
+  .package-date{
+    text-align:left;
+    white-space:normal;
   }
 }
 </style>
@@ -236,31 +304,30 @@ button:disabled{
 <body>
 <div class="wrap">
 
-<div class="hero">
-  <div class="hero-icon">
-    <i class="fa-solid fa-signal"></i>
-  </div>
-  <div>
-    <div class="hero-title">Cek Kuota XL & AXIS</div>
-    <div class="hero-sub">by XC-Store Apps</div>
-  </div>
-</div>
-
-<div class="card">
-  <div class="input-box">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <input id="nomor" placeholder="Masukkan nomor..." />
+  <div class="hero">
+    <div class="hero-icon">
+      <i class="fa-solid fa-signal"></i>
+    </div>
+    <div>
+      <div class="hero-title">Cek Kuota XL & AXIS</div>
+      <div class="hero-sub">by XC-Store Apps</div>
+    </div>
   </div>
 
-  <button onclick="cek()" id="btnCek">
-    <i class="fa-solid fa-paper-plane"></i> Cek Kuota
-  </button>
+  <div class="card">
+    <div class="input-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="nomor" placeholder="Masukkan nomor..." />
+    </div>
 
-  <div id="result" class="result"></div>
-</div>
+    <button onclick="cek()" id="btnCek">
+      <i class="fa-solid fa-paper-plane"></i> Cek Kuota
+    </button>
 
-<div class="footer">Powered by XC-Store</div>
+    <div id="result" class="result"></div>
+  </div>
 
+  <div class="footer">Powered by XC-Store</div>
 </div>
 
 <script>
@@ -296,6 +363,12 @@ function parsePercent(value){
   const n = parseFloat(String(value ?? '').replace(',', '.').replace(/[^\d.]/g,''));
   if(isNaN(n)) return 0;
   return Math.max(0, Math.min(100, n));
+}
+
+function getBarColorClass(percent){
+  if(percent <= 20) return 'red';
+  if(percent <= 60) return 'yellow';
+  return 'green';
 }
 
 function renderSubsCompact(s, nomor, v){
@@ -335,24 +408,26 @@ function renderPackages(packages){
 
     return `
       <div class="package-card">
-        <div class="package-name">${escapeHtml(pkg.name || '-')}</div>
-        <div class="package-exp">Expired: ${escapeHtml(pkg.expiry || '-')}</div>
+        <div class="package-head">
+          <div class="package-name">${escapeHtml(pkg.name || '-')}</div>
+          <div class="package-date">${escapeHtml(pkg.expiry || '-')}</div>
+        </div>
 
         ${
           quotas.length
             ? quotas.map(q => {
                 const percent = parsePercent(q.percent);
+                const colorClass = getBarColorClass(percent);
+
                 return `
                   <div class="quota-item">
-                    <div class="quota-name">${escapeHtml(q.name || '-')}</div>
-
-                    <div class="package-meta">
-                      <div>${percent}%</div>
-                      <div>Sisa: ${escapeHtml(q.remaining || '-')} / ${escapeHtml(q.total || '-')}</div>
+                    <div class="quota-row">
+                      <div class="quota-name">${escapeHtml(q.name || '-')}</div>
+                      <div class="quota-amount">${escapeHtml(q.remaining || '-')} / ${escapeHtml(q.total || '-')}</div>
                     </div>
 
                     <div class="progress">
-                      <div class="bar" style="width:${percent}%"></div>
+                      <div class="bar ${colorClass}" style="width:${percent}%"></div>
                     </div>
                   </div>
                 `;
