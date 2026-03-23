@@ -42,6 +42,7 @@ body{
   background:#111;color:#fff;
   border-radius:16px;
   display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
 }
 
 .hero-title{font-size:13.5px;font-weight:800;}
@@ -68,6 +69,8 @@ input{
   border:1px solid var(--line);
   padding:0 14px 0 40px;
   font-size:12.5px;
+  font-family:inherit;
+  outline:none;
 }
 
 button{
@@ -77,6 +80,13 @@ button{
   font-size:13px;font-weight:700;
   display:flex;align-items:center;justify-content:center;
   gap:6px;
+  cursor:pointer;
+  font-family:inherit;
+}
+
+button:disabled{
+  opacity:.7;
+  cursor:not-allowed;
 }
 
 .result{margin-top:10px;}
@@ -102,8 +112,19 @@ button{
   padding:10px;
 }
 
-.info-label{font-size:10px;color:#888;}
-.info-value{font-size:12.5px;font-weight:700;}
+.info-label{
+  font-size:10px;
+  color:#888;
+  line-height:1.35;
+}
+
+.info-value{
+  font-size:12.5px;
+  font-weight:700;
+  margin-top:3px;
+  line-height:1.45;
+  word-break:break-word;
+}
 
 .package-card{
   background:#fff;
@@ -113,9 +134,39 @@ button{
   margin-bottom:8px;
 }
 
+.package-card:last-child{
+  margin-bottom:0;
+}
+
 .package-name{
   font-size:12.5px;
   font-weight:800;
+  line-height:1.45;
+  margin-bottom:4px;
+}
+
+.package-exp{
+  font-size:10.5px;
+  color:#777;
+  margin-bottom:10px;
+}
+
+.quota-item{
+  border-top:1px solid #efefef;
+  padding-top:10px;
+  margin-top:10px;
+}
+
+.quota-item:first-of-type{
+  border-top:none;
+  padding-top:0;
+  margin-top:0;
+}
+
+.quota-name{
+  font-size:11px;
+  font-weight:700;
+  line-height:1.4;
   margin-bottom:6px;
 }
 
@@ -124,13 +175,16 @@ button{
   color:#666;
   display:flex;
   justify-content:space-between;
+  gap:10px;
   margin-bottom:6px;
+  line-height:1.45;
 }
 
 .progress{
   height:8px;
   background:#ddd;
   border-radius:999px;
+  overflow:hidden;
 }
 
 .bar{
@@ -139,11 +193,42 @@ button{
   border-radius:999px;
 }
 
+.status{
+  margin-top:10px;
+  padding:10px 11px;
+  border-radius:14px;
+  font-size:12px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+  line-height:1.5;
+  background:#fff;
+  border:1px solid #ddd;
+}
+
 .footer{
   text-align:center;
   font-size:11px;
   color:#999;
   margin-top:14px;
+}
+
+.empty-text{
+  font-size:11px;
+  color:#888;
+  line-height:1.5;
+}
+
+@media(max-width:400px){
+  .grid{
+    grid-template-columns:1fr 1fr;
+    gap:7px;
+  }
+
+  .package-meta{
+    flex-direction:column;
+    align-items:flex-start;
+  }
 }
 </style>
 </head>
@@ -180,13 +265,23 @@ button{
 
 <script>
 function normalizeNumber(input){
-  let n = input.replace(/\D/g,'');
+  let n = String(input || '').replace(/\D/g,'');
   if(n.startsWith('0')) n = '62' + n.slice(1);
   return n;
 }
 
+function escapeHtml(text){
+  return String(text ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
 function toggleDetail(){
   const el = document.getElementById('detailSubs');
+  if(!el) return;
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
 }
 
@@ -197,75 +292,148 @@ function infoCard(label,val){
   </div>`;
 }
 
-async function cek(){
-  const nomor = normalizeNumber(document.getElementById('nomor').value);
-  const resBox = document.getElementById('result');
-  const btn = document.getElementById('btnCek');
+function parsePercent(value){
+  const n = parseFloat(String(value ?? '').replace(',', '.').replace(/[^\d.]/g,''));
+  if(isNaN(n)) return 0;
+  return Math.max(0, Math.min(100, n));
+}
 
-  if(!nomor) return;
-
-  btn.disabled=true;
-  btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i>';
-
-  const res = await fetch('/api/cek?number='+nomor);
-  const data = await res.json();
-
-  const s = data.data.subs_info;
-  const v = s.volte;
-  const packages = data.data.package_info.packages;
-
-  resBox.innerHTML = `
-    
-    <!-- COMPACT INFO -->
+function renderSubsCompact(s, nomor, v){
+  return `
     <div class="section">
-      <div style="font-size:12px;font-weight:700;display:flex;justify-content:space-between;">
-        <div>${s.msisdn} • ${s.operator} • ${s.net_type}</div>
-        <div onclick="toggleDetail()" style="font-size:11px;color:#666;cursor:pointer;">
+      <div style="font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:flex-start;gap:10px;">
+        <div style="line-height:1.5;">
+          ${escapeHtml(s.msisdn || nomor)} • ${escapeHtml(s.operator || '-')} • ${escapeHtml(s.net_type || '-')}
+        </div>
+        <div onclick="toggleDetail()" style="font-size:11px;color:#666;cursor:pointer;white-space:nowrap;">
           Detail
         </div>
       </div>
 
       <div id="detailSubs" style="display:none;margin-top:8px;">
         <div class="grid">
-          ${infoCard('Registrasi', s.id_verified)}
-          ${infoCard('Umur', s.tenure)}
-          ${infoCard('Masa Aktif', s.exp_date)}
-          ${infoCard('Tenggang', s.grace_until)}
-          ${infoCard('Volte Area', v.area?'Ya':'Tidak')}
-          ${infoCard('Volte SIM', v.simcard?'Ya':'Tidak')}
-          ${infoCard('Volte Device', v.device?'Ya':'Tidak')}
+          ${infoCard('Registrasi', escapeHtml(s.id_verified || '-'))}
+          ${infoCard('Umur', escapeHtml(s.tenure || '-'))}
+          ${infoCard('Masa Aktif', escapeHtml(s.exp_date || '-'))}
+          ${infoCard('Tenggang', escapeHtml(s.grace_until || '-'))}
+          ${infoCard('Volte Area', v && v.area ? 'Ya' : 'Tidak')}
+          ${infoCard('Volte SIM', v && v.simcard ? 'Ya' : 'Tidak')}
+          ${infoCard('Volte Device', v && v.device ? 'Ya' : 'Tidak')}
         </div>
       </div>
     </div>
-
-    <!-- PAKET -->
-    <div class="section">
-      <div style="font-size:12px;font-weight:800;margin-bottom:8px;">
-        Paket Data
-      </div>
-
-      ${packages.map(p=>{
-        const q = p.quotas[0];
-        return `
-          <div class="package-card">
-            <div class="package-name">${p.name}</div>
-
-            <div class="package-meta">
-              <div>${p.expiry}</div>
-              <div>Sisa: ${q.remaining} / ${q.total}</div>
-            </div>
-
-            <div class="progress">
-              <div class="bar" style="width:${q.percent}%"></div>
-            </div>
-          </div>
-        `;
-      }).join('')}
-    </div>
   `;
+}
 
-  btn.disabled=false;
-  btn.innerHTML='<i class="fa-solid fa-paper-plane"></i> Cek Kuota';
+function renderPackages(packages){
+  if(!Array.isArray(packages) || !packages.length){
+    return `<div class="empty-text">Paket data tidak ditemukan.</div>`;
+  }
+
+  return packages.map(pkg => {
+    const quotas = Array.isArray(pkg.quotas) ? pkg.quotas : [];
+
+    return `
+      <div class="package-card">
+        <div class="package-name">${escapeHtml(pkg.name || '-')}</div>
+        <div class="package-exp">Expired: ${escapeHtml(pkg.expiry || '-')}</div>
+
+        ${
+          quotas.length
+            ? quotas.map(q => {
+                const percent = parsePercent(q.percent);
+                return `
+                  <div class="quota-item">
+                    <div class="quota-name">${escapeHtml(q.name || '-')}</div>
+
+                    <div class="package-meta">
+                      <div>${percent}%</div>
+                      <div>Sisa: ${escapeHtml(q.remaining || '-')} / ${escapeHtml(q.total || '-')}</div>
+                    </div>
+
+                    <div class="progress">
+                      <div class="bar" style="width:${percent}%"></div>
+                    </div>
+                  </div>
+                `;
+              }).join('')
+            : `<div class="empty-text">Detail kuota tidak tersedia.</div>`
+        }
+      </div>
+    `;
+  }).join('');
+}
+
+async function cek(){
+  const nomor = normalizeNumber(document.getElementById('nomor').value);
+  const resBox = document.getElementById('result');
+  const btn = document.getElementById('btnCek');
+
+  if(!nomor){
+    resBox.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-circle-exclamation"></i>
+        <span>Nomor belum diisi</span>
+      </div>
+    `;
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i>';
+
+  try{
+    const res = await fetch('/api/cek?number=' + encodeURIComponent(nomor));
+    const raw = await res.text();
+
+    let data;
+    try{
+      data = JSON.parse(raw);
+    }catch{
+      resBox.innerHTML = `
+        <div class="status">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Response API bukan JSON valid</span>
+        </div>
+      `;
+      return;
+    }
+
+    if(!data.success){
+      resBox.innerHTML = `
+        <div class="status">
+          <i class="fa-solid fa-circle-xmark"></i>
+          <span>${escapeHtml(data.message || 'Gagal mengambil data')}</span>
+        </div>
+      `;
+      return;
+    }
+
+    const s = data.data?.subs_info || {};
+    const v = s.volte || {};
+    const packages = data.data?.package_info?.packages || [];
+
+    resBox.innerHTML = `
+      ${renderSubsCompact(s, nomor, v)}
+
+      <div class="section">
+        <div style="font-size:12px;font-weight:800;margin-bottom:8px;">
+          Paket Data
+        </div>
+        ${renderPackages(packages)}
+      </div>
+    `;
+  }catch(e){
+    resBox.innerHTML = `
+      <div class="status">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>Error ambil data</span>
+      </div>
+    `;
+  }finally{
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Cek Kuota';
+  }
 }
 </script>
 
