@@ -1,699 +1,248 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Cek Kuota XL & AXIS</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Cek Kuota</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"/>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
 
-    :root {
-      --bg: #f6f6f1;
-      --card: #ffffff;
-      --text: #111111;
-      --text-soft: #6b7280;
-      --line: #ececec;
-      --yellow: #facc15;
-      --yellow-dark: #eab308;
-      --black: #111111;
-      --soft: #fafafa;
-      --soft-yellow: #fff8d8;
-      --success-bg: #f0fdf4;
-      --success-text: #166534;
-      --error-bg: #fef2f2;
-      --error-text: #b91c1c;
-      --shadow: 0 10px 26px rgba(17, 17, 17, 0.07);
-    }
+:root{
+  --bg:#efeff2;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#8f8f8f;
+  --line:#e6e6e6;
+}
 
-    body {
-      font-family: 'Poppins', sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(250,204,21,.12), transparent 28%),
-        linear-gradient(180deg, #fffef9 0%, #f4f4ee 100%);
-      color: var(--text);
-      min-height: 100vh;
-      padding: 14px;
-      display: flex;
-      justify-content: center;
-    }
+body{
+  font-family:'Poppins',sans-serif;
+  background:var(--bg);
+  padding:14px 12px;
+}
 
-    .wrap {
-      width: 100%;
-      max-width: 400px;
-    }
+.wrap{
+  max-width:420px;
+  margin:auto;
+}
 
-    .card {
-      background: var(--card);
-      border: 1px solid rgba(17,17,17,.06);
-      border-radius: 22px;
-      overflow: hidden;
-      box-shadow: var(--shadow);
-    }
+/* HERO */
+.hero{
+  background:var(--card);
+  border-radius:22px;
+  padding:14px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-bottom:12px;
+}
 
-    .top {
-      background: linear-gradient(135deg, #111111 0%, #1d1d1d 100%);
-      color: #fff;
-      padding: 16px;
-      position: relative;
-    }
+.hero-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  background:#111;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+}
 
-    .top::after {
-      content: "";
-      position: absolute;
-      top: -28px;
-      right: -28px;
-      width: 90px;
-      height: 90px;
-      border-radius: 50%;
-      background: rgba(250,204,21,.18);
-      filter: blur(6px);
-    }
+.hero-title{
+  font-size:13.5px;
+  font-weight:800;
+}
 
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.08);
-      color: #fff4b5;
-      padding: 6px 10px;
-      border-radius: 999px;
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: .4px;
-      margin-bottom: 10px;
-      position: relative;
-      z-index: 1;
-    }
+.hero-sub{
+  font-size:11px;
+  color:var(--muted);
+}
 
-    .brand i {
-      color: var(--yellow);
-      font-size: 11px;
-    }
+/* CARD */
+.card{
+  background:var(--card);
+  border-radius:22px;
+  padding:14px;
+}
 
-    .title-row {
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      position: relative;
-      z-index: 1;
-    }
+/* INPUT */
+.input-box{
+  position:relative;
+  margin-bottom:10px;
+}
 
-    .title-icon {
-      width: 38px;
-      height: 38px;
-      border-radius: 12px;
-      background: rgba(250,204,21,.14);
-      color: var(--yellow);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 16px;
-      border: 1px solid rgba(250,204,21,.18);
-    }
+.input-box i{
+  position:absolute;
+  left:14px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:12px;
+  color:#aaa;
+}
 
-    h2 {
-      font-size: 19px;
-      line-height: 1.35;
-      font-weight: 800;
-      margin-bottom: 4px;
-    }
+input{
+  width:100%;
+  height:44px;
+  border-radius:16px;
+  border:1.5px solid var(--line);
+  padding:0 14px 0 40px;
+  font-size:12.5px;
+  outline:none;
+  font-family:inherit;
+}
 
-    .sub {
-      color: rgba(255,255,255,.74);
-      font-size: 11.5px;
-      line-height: 1.6;
-    }
+input::placeholder{
+  color:#a8a8a8;
+}
 
-    .content {
-      padding: 14px;
-    }
+/* BUTTON */
+button{
+  width:100%;
+  height:46px;
+  border:none;
+  border-radius:18px;
+  background:#111;
+  color:#fff;
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  cursor:pointer;
+}
 
-    .label {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
+button:disabled{
+  opacity:.7;
+}
 
-    .label i {
-      color: #111;
-      font-size: 12px;
-    }
+button i{
+  font-size:12px;
+}
 
-    .input-box {
-      position: relative;
-      margin-bottom: 10px;
-    }
+/* RESULT */
+.result{
+  margin-top:10px;
+}
 
-    .input-box i {
-      position: absolute;
-      left: 13px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #888;
-      font-size: 14px;
-    }
+/* STATUS */
+.status{
+  margin-top:10px;
+  padding:10px 11px;
+  border-radius:14px;
+  font-size:12px;
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
 
-    input {
-      width: 100%;
-      height: 48px;
-      padding: 0 14px 0 40px;
-      border-radius: 14px;
-      border: 1px solid var(--line);
-      outline: none;
-      background: #fff;
-      color: var(--text);
-      font-size: 13px;
-      font-family: inherit;
-      transition: .2s ease;
-    }
+.status i{
+  font-size:12px;
+}
 
-    input:focus {
-      border-color: var(--yellow);
-      box-shadow: 0 0 0 4px rgba(250,204,21,.12);
-    }
+.ok{
+  background:#f4f4f4;
+}
 
-    input::placeholder {
-      color: #9ca3af;
-    }
+.err{
+  background:#fff;
+  border:1px solid #ddd;
+}
 
-    button {
-      width: 100%;
-      height: 48px;
-      border: none;
-      border-radius: 14px;
-      background: linear-gradient(180deg, var(--yellow) 0%, var(--yellow-dark) 100%);
-      color: #111;
-      font-family: inherit;
-      font-size: 13px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: .2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      box-shadow: 0 8px 16px rgba(250,204,21,.20);
-    }
-
-    button:disabled {
-      opacity: .7;
-      cursor: not-allowed;
-    }
-
-    .result {
-      margin-top: 10px;
-    }
-
-    .box {
-      background: #fff;
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      padding: 12px;
-      margin-top: 10px;
-    }
-
-    .box-title {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 13px;
-      font-weight: 800;
-      margin-bottom: 10px;
-      color: var(--black);
-    }
-
-    .box-title i {
-      width: 24px;
-      height: 24px;
-      border-radius: 8px;
-      background: var(--soft-yellow);
-      color: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 12px;
-      flex-shrink: 0;
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    .item {
-      background: var(--soft);
-      border: 1px solid #efefef;
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .item-top {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 4px;
-    }
-
-    .item-top i {
-      color: #777;
-      font-size: 11px;
-      width: 12px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-
-    .item small {
-      display: block;
-      color: var(--text-soft);
-      font-size: 10.5px;
-      font-weight: 600;
-      line-height: 1.35;
-    }
-
-    .item strong {
-      display: block;
-      color: var(--text);
-      font-size: 12px;
-      font-weight: 700;
-      line-height: 1.45;
-      word-break: break-word;
-    }
-
-    .progress-wrap {
-      margin-top: 10px;
-      background: var(--soft-yellow);
-      border: 1px solid rgba(250,204,21,.25);
-      border-radius: 12px;
-      padding: 10px;
-    }
-
-    .progress-head {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      font-size: 11px;
-      font-weight: 700;
-      margin-bottom: 7px;
-      color: var(--black);
-    }
-
-    .progress {
-      width: 100%;
-      height: 8px;
-      background: rgba(17,17,17,.08);
-      border-radius: 999px;
-      overflow: hidden;
-    }
-
-    .bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #111111 0%, #2b2b2b 100%);
-      border-radius: 999px;
-      transition: width .35s ease;
-    }
-
-    .bar.red {
-      background: linear-gradient(90deg, #dc2626 0%, #b91c1c 100%);
-    }
-
-    .bar.orange {
-      background: linear-gradient(90deg, #f59e0b 0%, #ea580c 100%);
-    }
-
-    .muted {
-      margin-top: 8px;
-      color: var(--text-soft);
-      font-size: 10.5px;
-      line-height: 1.5;
-    }
-
-    .status {
-      margin-top: 10px;
-      padding: 11px 12px;
-      border-radius: 13px;
-      font-size: 12px;
-      line-height: 1.55;
-      font-weight: 600;
-      word-break: break-word;
-      white-space: pre-wrap;
-      display: flex;
-      align-items: flex-start;
-      gap: 8px;
-    }
-
-    .status i {
-      margin-top: 1px;
-      flex-shrink: 0;
-    }
-
-    .ok {
-      background: var(--success-bg);
-      color: var(--success-text);
-      border: 1px solid #d1fadf;
-    }
-
-    .err {
-      background: var(--error-bg);
-      color: var(--error-text);
-      border: 1px solid #fecaca;
-    }
-
-    .loading-box {
-      display: flex;
-      align-items: center;
-      gap: 9px;
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .loading-dot {
-      width: 9px;
-      height: 9px;
-      border-radius: 50%;
-      background: var(--yellow);
-      animation: pulse 1s infinite ease-in-out;
-      flex-shrink: 0;
-    }
-
-    .footer-note {
-      margin-top: 10px;
-      text-align: center;
-      color: var(--text-soft);
-      font-size: 10.5px;
-      line-height: 1.5;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); opacity: 1; }
-      50% { transform: scale(1.35); opacity: .55; }
-    }
-
-    @media (max-width: 420px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      h2 {
-        font-size: 18px;
-      }
-    }
-  </style>
+/* FOOTER */
+.footer{
+  text-align:center;
+  font-size:11px;
+  color:#9a9a9a;
+  margin-top:14px;
+}
+</style>
 </head>
+
 <body>
-  <div class="wrap">
-    <div class="card">
-      <div class="top">
-        <div class="brand">
-          <i class="fa-solid fa-bolt"></i>
-          XC-STORE
-        </div>
 
-        <div class="title-row">
-          <div class="title-icon">
-            <i class="fa-solid fa-signal"></i>
-          </div>
-          <div>
-            <h2>Cek Kuota XL & AXIS</h2>
-            <p class="sub">Cek info kartu, paket aktif, dan sisa kuota dengan tampilan ringkas dan rapi.</p>
-          </div>
-        </div>
-      </div>
+<div class="wrap">
 
-      <div class="content">
-        <label class="label" for="nomor">
-          <i class="fa-solid fa-mobile-screen-button"></i>
-          Nomor Tujuan
-        </label>
-
-        <div class="input-box">
-          <i class="fa-solid fa-phone"></i>
-          <input id="nomor" type="tel" placeholder="0817xxxx / 62817xxxx" />
-        </div>
-
-        <button id="btnCek" onclick="cek()">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <span>Cek Kuota</span>
-        </button>
-
-        <div class="result" id="result"></div>
-        <div class="footer-note">Powered by XC-Store</div>
-      </div>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-icon">
+      <i class="fa-solid fa-signal"></i>
+    </div>
+    <div>
+      <div class="hero-title">Cek Kuota XL & AXIS</div>
+      <div class="hero-sub">by XC-Store Apps</div>
     </div>
   </div>
 
-  <script>
-    function normalizeNumber(input) {
-      let n = String(input || '').trim().replace(/\D/g, '');
-      if (!n) return '';
-      if (n.startsWith('0')) n = '62' + n.slice(1);
-      return n;
+  <!-- INPUT -->
+  <div class="card">
+    <div class="input-box">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="nomor" placeholder="Cari nomor XL / AXIS..." />
+    </div>
+
+    <button id="btnCek" onclick="cek()">
+      <i class="fa-solid fa-paper-plane"></i>
+      Cek Kuota
+    </button>
+
+    <div id="result" class="result"></div>
+  </div>
+
+  <div class="footer">Powered by XC-Store</div>
+
+</div>
+
+<script>
+function normalizeNumber(input){
+  let n=String(input||'').replace(/\D/g,'');
+  if(n.startsWith('0')) n='62'+n.slice(1);
+  return n;
+}
+
+async function cek(){
+  const input=document.getElementById('nomor');
+  const btn=document.getElementById('btnCek');
+  const resBox=document.getElementById('result');
+
+  const nomor=normalizeNumber(input.value);
+
+  if(!nomor){
+    resBox.innerHTML=`<div class="status err"><i class="fa-solid fa-circle-exclamation"></i> Nomor belum diisi</div>`;
+    return;
+  }
+
+  btn.disabled=true;
+  btn.innerHTML=`<i class="fa-solid fa-spinner fa-spin"></i>`;
+
+  try{
+    const res=await fetch(`/api/cek?number=${nomor}`);
+    const data=await res.json();
+
+    if(!data.success){
+      resBox.innerHTML=`<div class="status err">${data.message}</div>`;
+      return;
     }
 
-    function parseGB(value) {
-      if (!value) return 0;
-      const clean = String(value).trim().toUpperCase().replace(',', '.');
-      const num = parseFloat(clean.replace(/[^\d.]/g, ''));
-      if (isNaN(num)) return 0;
-      if (clean.includes('MB')) return num / 1024;
-      if (clean.includes('KB')) return num / (1024 * 1024);
-      return num;
-    }
+    resBox.innerHTML=`
+      <div class="status ok">
+        <i class="fa-solid fa-circle-check"></i>
+        Data berhasil diambil
+      </div>
+    `;
+  }catch(e){
+    resBox.innerHTML=`<div class="status err">Error</div>`;
+  }
 
-    function formatGB(n) {
-      if (!isFinite(n)) return '-';
-      if (n >= 1) return n.toFixed(n % 1 === 0 ? 0 : 2).replace(/\.00$/, '') + ' GB';
-      return (n * 1024).toFixed(0) + ' MB';
-    }
+  btn.disabled=false;
+  btn.innerHTML=`<i class="fa-solid fa-paper-plane"></i> Cek Kuota`;
+}
+</script>
 
-    function parseDDMMYYYY(str) {
-      if (!str) return null;
-      const p = str.split('-');
-      if (p.length !== 3) return null;
-      return new Date(`${p[2]}-${p[1]}-${p[0]}T23:59:59`);
-    }
-
-    function escapeHtml(text) {
-      return String(text ?? '')
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#039;');
-    }
-
-    function itemCard(icon, label, value) {
-      return `
-        <div class="item">
-          <div class="item-top">
-            <i class="${icon}"></i>
-            <small>${label}</small>
-          </div>
-          <strong>${value}</strong>
-        </div>
-      `;
-    }
-
-    async function cek() {
-      const input = document.getElementById('nomor');
-      const btn = document.getElementById('btnCek');
-      const resBox = document.getElementById('result');
-
-      const nomor = normalizeNumber(input.value);
-
-      if (!nomor) {
-        resBox.innerHTML = `
-          <div class="status err">
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <div>Nomor belum diisi.</div>
-          </div>
-        `;
-        return;
-      }
-
-      btn.disabled = true;
-      btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i><span>Memproses...</span>`;
-      resBox.innerHTML = `
-        <div class="box">
-          <div class="loading-box">
-            <span class="loading-dot"></span>
-            <span>Sedang mengambil data kuota...</span>
-          </div>
-        </div>
-      `;
-
-      try {
-        const url = `/api/cek?number=${encodeURIComponent(nomor)}`;
-        const res = await fetch(url);
-        const raw = await res.text();
-
-        let data;
-        try {
-          data = JSON.parse(raw);
-        } catch {
-          resBox.innerHTML = `
-            <div class="status err">
-              <i class="fa-solid fa-triangle-exclamation"></i>
-              <div>Response bukan JSON valid.\n\n${escapeHtml(raw)}</div>
-            </div>
-          `;
-          return;
-        }
-
-        if (!data.success) {
-          resBox.innerHTML = `
-            <div class="status err">
-              <i class="fa-solid fa-circle-xmark"></i>
-              <div>${escapeHtml(data.message || 'Gagal mengambil data.')}</div>
-            </div>
-          `;
-          return;
-        }
-
-        const root = data.data || {};
-        const subs = root.subs_info || {};
-        const packageInfo = root.package_info || {};
-        const packages = Array.isArray(packageInfo.packages) ? packageInfo.packages : [];
-
-        if (!packages.length) {
-          resBox.innerHTML = `
-            <div class="box">
-              <div class="box-title">
-                <i class="fa-solid fa-sim-card"></i>
-                <span>Informasi Nomor</span>
-              </div>
-              <div class="grid">
-                ${itemCard('fa-solid fa-phone', 'Nomor', escapeHtml(subs.msisdn || nomor))}
-                ${itemCard('fa-solid fa-tower-cell', 'Operator', escapeHtml(subs.operator || '-'))}
-                ${itemCard('fa-solid fa-signal', 'Jaringan', escapeHtml(subs.net_type || '-'))}
-                ${itemCard('fa-solid fa-calendar-days', 'Masa Aktif', escapeHtml(subs.exp_date || '-'))}
-              </div>
-            </div>
-
-            <div class="status err">
-              <i class="fa-solid fa-circle-exclamation"></i>
-              <div>${escapeHtml(packageInfo.error_message || 'Paket tidak ditemukan pada nomor ini.')}</div>
-            </div>
-          `;
-          return;
-        }
-
-        const pkg = packages[0];
-        const quota = Array.isArray(pkg.quotas) && pkg.quotas.length ? pkg.quotas[0] : {};
-
-        const totalGB = parseGB(quota.total);
-        const remainingGB = parseGB(quota.remaining);
-        const usedGB = Math.max(0, totalGB - remainingGB);
-
-        let remainingPercent = Number(quota.percent);
-        if (!isFinite(remainingPercent)) {
-          remainingPercent = totalGB > 0 ? (remainingGB / totalGB) * 100 : 0;
-        }
-
-        const usedPercent = totalGB > 0 ? (usedGB / totalGB) * 100 : 0;
-        const expDate = parseDDMMYYYY(pkg.expiry);
-        const expired = expDate ? (new Date() > expDate) : false;
-
-        let barClass = '';
-        if (expired) barClass = 'red';
-        else if (remainingPercent <= 20) barClass = 'orange';
-
-        const volteText = subs.volte
-          ? [
-              subs.volte.device ? 'Device' : null,
-              subs.volte.area ? 'Area' : null,
-              subs.volte.simcard ? 'SIM' : null
-            ].filter(Boolean).join(', ') || '-'
-          : '-';
-
-        resBox.innerHTML = `
-          <div class="box">
-            <div class="box-title">
-              <i class="fa-solid fa-sim-card"></i>
-              <span>Informasi Nomor</span>
-            </div>
-            <div class="grid">
-              ${itemCard('fa-solid fa-phone', 'Nomor', escapeHtml(subs.msisdn || nomor))}
-              ${itemCard('fa-solid fa-tower-cell', 'Operator', escapeHtml(subs.operator || '-'))}
-              ${itemCard('fa-solid fa-signal', 'Jaringan', escapeHtml(subs.net_type || '-'))}
-              ${itemCard('fa-solid fa-id-card', 'Verifikasi ID', escapeHtml(subs.id_verified || '-'))}
-              ${itemCard('fa-solid fa-clock', 'Tenure', escapeHtml(subs.tenure || '-'))}
-              ${itemCard('fa-solid fa-calendar-days', 'Masa Aktif', escapeHtml(subs.exp_date || '-'))}
-              ${itemCard('fa-solid fa-hourglass-end', 'Grace Until', escapeHtml(subs.grace_until || '-'))}
-              ${itemCard('fa-solid fa-wifi', 'VoLTE', escapeHtml(volteText))}
-            </div>
-          </div>
-
-          <div class="box">
-            <div class="box-title">
-              <i class="fa-solid fa-box-open"></i>
-              <span>Paket Aktif</span>
-            </div>
-            <div class="grid">
-              ${itemCard('fa-solid fa-tag', 'Nama Paket', escapeHtml(pkg.name || '-'))}
-              ${itemCard('fa-solid fa-calendar-xmark', 'Expired Paket', escapeHtml(pkg.expiry || '-'))}
-              ${itemCard('fa-solid fa-database', 'Total Kuota', escapeHtml(quota.total || '-'))}
-              ${itemCard('fa-solid fa-battery-three-quarters', 'Sisa Kuota', escapeHtml(quota.remaining || '-'))}
-              ${itemCard('fa-solid fa-chart-simple', 'Terpakai', escapeHtml(formatGB(usedGB)))}
-              ${itemCard('fa-solid fa-percent', 'Sisa Persen', remainingPercent.toFixed(1) + '%')}
-            </div>
-
-            <div class="progress-wrap">
-              <div class="progress-head">
-                <span>Progress sisa kuota</span>
-                <span>${remainingPercent.toFixed(1)}%</span>
-              </div>
-              <div class="progress">
-                <div class="bar ${barClass}" style="width:${remainingPercent}%"></div>
-              </div>
-            </div>
-
-            <div class="muted">
-              Terpakai sekitar ${usedPercent.toFixed(1)}% dari total kuota.
-            </div>
-          </div>
-
-          <div class="status ok">
-            <i class="fa-solid fa-circle-check"></i>
-            <div>
-              ${expired
-                ? 'Paket terdeteksi sudah expired.'
-                : remainingPercent <= 20
-                  ? 'Paket aktif, tetapi sisa kuota sudah rendah.'
-                  : 'Paket aktif dan data berhasil diambil.'}
-            </div>
-          </div>
-        `;
-      } catch (e) {
-        resBox.innerHTML = `
-          <div class="status err">
-            <i class="fa-solid fa-triangle-exclamation"></i>
-            <div>Request gagal: ${escapeHtml(e.message)}</div>
-          </div>
-        `;
-      } finally {
-        btn.disabled = false;
-        btn.innerHTML = `<i class="fa-solid fa-magnifying-glass"></i><span>Cek Kuota</span>`;
-      }
-    }
-  </script>
 </body>
 </html>
