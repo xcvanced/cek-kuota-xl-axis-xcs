@@ -381,7 +381,8 @@ button:disabled{
   <div class="card">
     <div class="input-box">
       <i class="fa-solid fa-phone"></i>
-      <input id="nomor" type="tel" placeholder="Masukkan nomor..." />
+      <input id="nomor" type="tel" placeholder="Masukkan nomor..."
+oninput="this.value = formatInputDisplay(this.value)" />
     </div>
 
     <button onclick="cek()" id="btnCek">
@@ -397,7 +398,22 @@ button:disabled{
 <script>
 function normalizeNumber(input){
   let n = String(input || '').replace(/\D/g,'');
-  if(n.startsWith('0')) n = '62' + n.slice(1);
+
+  // ubah 62 / +62 jadi 0
+  if(n.startsWith('62')){
+    n = '0' + n.slice(2);
+  }
+
+  return n;
+}
+
+function formatInputDisplay(value){
+  let n = String(value || '').replace(/\D/g,'');
+
+  if(n.startsWith('62')){
+    return '0' + n.slice(2);
+  }
+
   return n;
 }
 
