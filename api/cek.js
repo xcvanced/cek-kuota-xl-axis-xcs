@@ -23,14 +23,14 @@ export default async function handler(req, res) {
     });
   }
 
-  const url = `https://bendith.my.id/end.php?check=package&number=${encodeURIComponent(number)}&version=2`;
+  const url = `https://xl-ku.my.id/end.php?check=package&number=${encodeURIComponent(number)}&version=2`;
 
   try {
     const response = await fetch(url, {
       method: 'GET',
       headers: {
         'Accept': 'application/json, text/plain, */*',
-        'Referer': 'https://bendith.my.id/',
+        'Referer': 'https://xl-ku.my.id/',
         'User-Agent': 'Mozilla/5.0'
       }
     });
